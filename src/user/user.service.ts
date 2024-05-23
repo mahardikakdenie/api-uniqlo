@@ -10,6 +10,7 @@ import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { PrismaService } from 'src/common/prisma.service';
 import { UserValidation } from './user.validation';
 import * as bcrypt from 'bcrypt';
+import { randomUUID } from 'crypto';
 
 @Injectable()
 export class UserService {
@@ -63,6 +64,15 @@ export class UserService {
       throw new HttpException('Your Credential is not valid', 401);
     }
 
-    return user;
+    const res = this.prismaService?.user.update({
+      where: {
+        email: loginUserRequest.email,
+      },
+      data: {
+        token: randomUUID(),
+      },
+    });
+
+    return res;
   }
 }

@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
 import { UserModule } from './user/user.module';
 import { CommonModule } from './common/common.module';
-import { TransformerService } from './transformer/transformer.service';
-import { TransformerModule } from './transformer/transformer.module';
+import { TransformerService } from './common/transformer.service';
 
 @Module({
-  imports: [UserModule, CommonModule, TransformerModule, TransformerModule],
+  imports: [UserModule, CommonModule],
   controllers: [],
   providers: [TransformerService],
 })

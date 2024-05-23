@@ -8,8 +8,8 @@ export class UserValidation {
     name: z.string().min(1).max(100),
   });
 
-	static readonly LOGIN: ZodType = z.object({
-		username: z.string(),
-		password: z.string(),
-	})
+  static readonly LOGIN: ZodType = z.object({
+    email: z.string().email(),
+    password: z.string(),
+  });
 }
