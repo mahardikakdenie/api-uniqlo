@@ -5,8 +5,18 @@ export class RegisterUserRequest {
   email: string;
 }
 
-export class UserReponse {
-  id: string;
+export interface I_LOGINREQUEST {
+  email: string;
+  password: string;
+}
+
+export interface I_METARESPONSE {
+  status: string | number;
+  message: string;
+}
+
+export interface I_USER_RESPONSE {
+  id: number | string;
   username: string;
   password: string;
   name: string;
