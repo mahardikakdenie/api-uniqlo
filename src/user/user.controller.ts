@@ -22,12 +22,4 @@ export class UserController {
     const result = await this.userService.register(request);
     return this.transformer.response(result, 'success');
   }
-
-  @Post('login')
-  async login(
-    @Body() request: RegisterUserRequest,
-  ): Promise<I_WEBRESPONSE<{ access_token: string }, I_META>> {
-    const result = await this.userService.login(request);
-    return this.transformerLogin.response(result, 'success');
-  }
 }
