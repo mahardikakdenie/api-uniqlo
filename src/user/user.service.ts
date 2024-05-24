@@ -45,4 +45,13 @@ export class UserService {
     });
     return users;
   }
+
+  async getMe(userId: number): Promise<I_USER_RESPONSE> {
+    const user = await this.prismaService.user.findFirst({
+      where: {
+        id: userId,
+      },
+    });
+    return user;
+  }
 }
