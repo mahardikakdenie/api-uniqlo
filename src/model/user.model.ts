@@ -23,3 +23,7 @@ export interface I_USER_RESPONSE {
   email: string;
   token?: string;
 }
+
+export interface I_USER_ACCESS_TOKEN {
+  access_token: string;
+}
