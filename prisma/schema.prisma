@@ -14,12 +14,19 @@ datasource db {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
-  username String  @db.VarChar(100)
-  password String  @db.VarChar(100)
-  name     String  @db.VarChar(100)
-  email    String  @unique @db.VarChar(100)
-  token    String? @db.VarChar(100)
+  id       Int    @id @default(autoincrement())
+  username String @db.VarChar(100)
+  password String @db.VarChar(100)
+  name     String @db.VarChar(100)
+  email    String @unique @db.VarChar(100)
+  tokenId  Int?   @map("token_id")
+  Token    Token? @relation(fields: [tokenId], references: [id])
 
   @@map("users")
+}
+
+model Token {
+  id    Int    @id @default(autoincrement())
+  token String @unique
+  User  User[]
 }

@@ -64,15 +64,29 @@ export class UserService {
       throw new HttpException('Your Credential is not valid', 401);
     }
 
-    const res = this.prismaService?.user.update({
-      where: {
-        email: loginUserRequest.email,
-      },
+    const token = await this.prismaService?.token?.create({
       data: {
         token: randomUUID(),
       },
     });
 
+    const res = this.prismaService?.user.update({
+      where: {
+        email: loginUserRequest.email,
+      },
+      data: {
+        tokenId: token?.id,
+      },
+    });
+
     return res;
+  }
+
+  async getAllUsers() {
+    const query = this.prismaService.user.findMany();
+    // query.where({
+    //   tokenId: 1,
+    // });
+    return query;
   }
 }
