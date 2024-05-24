@@ -38,7 +38,7 @@ export class UserService {
     return user;
   }
 
-  async getUsers(request: I_COMMON_QUERY): Promise<I_USER_RESPONSE[]> {
+  async getUsers(request?: I_COMMON_QUERY): Promise<I_USER_RESPONSE[]> {
     const users = await this.prismaService.user.findMany({
       skip: request.skip,
       take: request.take,
