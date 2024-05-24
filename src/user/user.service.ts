@@ -10,7 +10,8 @@ import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { PrismaService } from 'src/common/prisma.service';
 import { UserValidation } from './user.validation';
 import * as bcrypt from 'bcrypt';
-import { randomUUID } from 'crypto';
+// import { randomUUID } from 'crypto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
@@ -18,6 +19,7 @@ export class UserService {
     private readonly validationService: ValidationService,
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
     private prismaService: PrismaService,
+    private jwtService: JwtService,
   ) {}
 
   async register(request: RegisterUserRequest): Promise<I_USER_RESPONSE> {
@@ -39,18 +41,17 @@ export class UserService {
     return user;
   }
 
-  async login(request: I_LOGINREQUEST): Promise<I_USER_RESPONSE> {
+  async login(request: I_LOGINREQUEST): Promise<{ access_token: string }> {
     const loginUserRequest = this.validationService.validate(
       UserValidation.LOGIN,
       request,
     );
 
-    const user = await this.prismaService.user.findUnique({
+    const user = await this.prismaService.user.findFirst({
       where: {
         email: loginUserRequest.email,
       },
     });
-
     if (!user) {
       throw new Error('User not found');
     }
@@ -64,15 +65,8 @@ export class UserService {
       throw new HttpException('Your Credential is not valid', 401);
     }
 
-    const res = this.prismaService?.user.update({
-      where: {
-        email: loginUserRequest.email,
-      },
-      data: {
-        token: randomUUID(),
-      },
-    });
-
-    return res;
+    return {
+      access_token: this.jwtService.sign({ id: user?.id, email: user?.email }),
+    };
   }
 }
