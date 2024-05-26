@@ -38,11 +38,35 @@ export class ProductsService {
   ): Promise<Array<T_PRODUCT_RESPONSE>> {
     const products = this.prismaService.products.findMany({
       skip: Number(request?.skip ?? 0),
+      take: Number(request?.take ?? 0),
       include: {
-        owner: true,
-      }
+        owner: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
     });
 
     return products;
+  }
+
+  async updateProducts(
+    request: I_PRODUCT_REQUEST,
+    id: any,
+  ): Promise<T_PRODUCT_RESPONSE> {
+    const product = this.prismaService.products.update({
+      where: {
+        id: Number(id?.id),
+      },
+      data: {
+        name: request?.name,
+        description: request?.description,
+        price: request?.price,
+      },
+    });
+
+    return product;
   }
 }

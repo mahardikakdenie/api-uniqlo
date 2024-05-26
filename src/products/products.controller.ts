@@ -3,7 +3,9 @@ import {
   Controller,
   Get,
   HttpCode,
+  Param,
   Post,
+  Put,
   Query,
   Req,
   UseFilters,
@@ -18,6 +20,8 @@ import { TransformerService } from 'src/common/transformer.service';
 import { I_COMMON_QUERY } from 'src/model/query.module';
 
 @Controller('v1/products')
+@UseGuards(AuthGuard)
+@UseFilters(ErrorFilter)
 export class ProductsController {
   constructor(
     private productService: ProductsService,
@@ -25,9 +29,7 @@ export class ProductsController {
   ) {}
 
   @Post()
-  @UseGuards(AuthGuard)
   @HttpCode(200)
-  @UseFilters(ErrorFilter)
   async createProducts(
     @Body() request: I_PRODUCT_REQUEST,
     @Req() data: Request,
@@ -41,21 +43,22 @@ export class ProductsController {
   }
 
   @Get()
-  @UseGuards(AuthGuard)
-  @HttpCode(200)
-  @UseFilters(ErrorFilter)
   async getProducts(
     @Query() request: I_COMMON_QUERY,
   ): Promise<I_WEBRESPONSE<Array<T_PRODUCT_RESPONSE>, I_META>> {
-    const params = {
-      skip: request?.skip,
-      take: request?.take,
-      page: request?.page,
-      limit: request?.limit,
-      search: request?.search,
-    };
-    const products = await this.productService.getProducts(params);
+    const products = await this.productService.getProducts(request);
 
     return this.JSON.response(products);
+  }
+
+  @Put('/:id')
+  @HttpCode(200)
+  async updateProduct(
+    @Body() request: I_PRODUCT_REQUEST,
+    @Param() id: number,
+  ): Promise<I_WEBRESPONSE<T_PRODUCT_RESPONSE, I_META>> {
+    const product = await this.productService.updateProducts(request, id);
+
+    return this.JSON.response(product);
   }
 }

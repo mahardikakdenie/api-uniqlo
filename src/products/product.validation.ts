@@ -18,4 +18,12 @@ export class ProductValidation {
     price: z.string().refine(this.validatePrice),
     owner_id: z.number(),
   });
+
+  static readonly COMMON_QUERY: ZodType = z.object({
+    skip: z.number().optional(),
+    take: z.number().optional(),
+    page: z.number().optional(),
+    limit: z.number().optional(),
+    Search: z.string().optional(),
+  });
 }
