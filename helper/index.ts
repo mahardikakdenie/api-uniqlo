@@ -7,3 +7,5 @@ export const queryBuilder = <T>(obj: T): Partial<T> => {
   }
   return newObj;
 };
+
+export const genereteSlug = (name: string): string => name?.replace(' ', '-');
