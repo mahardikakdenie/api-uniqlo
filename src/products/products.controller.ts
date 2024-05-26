@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   Param,
@@ -45,8 +46,9 @@ export class ProductsController {
   @Get()
   async getProducts(
     @Query() request: I_COMMON_QUERY,
+    @Query() id?: number,
   ): Promise<I_WEBRESPONSE<Array<T_PRODUCT_RESPONSE>, I_META>> {
-    const products = await this.productService.getProducts(request);
+    const products = await this.productService.getProducts(request, id);
 
     return this.JSON.response(products);
   }
@@ -60,5 +62,15 @@ export class ProductsController {
     const product = await this.productService.updateProducts(request, id);
 
     return this.JSON.response(product);
+  }
+
+  @Delete('/:id')
+  @HttpCode(200)
+  async deleteProduct(
+    @Param() id: number,
+  ): Promise<I_WEBRESPONSE<T_PRODUCT_RESPONSE, I_META>> {
+    await this.productService.deleteProducts(id);
+
+    return this.JSON.response(null);
   }
 }
