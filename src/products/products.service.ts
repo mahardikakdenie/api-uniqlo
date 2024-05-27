@@ -38,9 +38,7 @@ export class ProductsService {
     request: I_COMMON_QUERY,
     id?: any,
   ): Promise<Array<T_PRODUCT_RESPONSE>> {
-    console.log('🚀 ~ ProductsService ~ request:', request);
     const queryWhere = queryBuilder({ id: Number(id?.id) });
-    console.log('🚀 ~ ProductsService ~ queryWhere:', queryWhere);
     const products = this.prismaService.products.findMany({
       skip: Number(request?.skip ?? 0),
       take: Number(request?.take ?? 0),
