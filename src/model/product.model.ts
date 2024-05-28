@@ -14,4 +14,5 @@ export interface I_PRODUCT_REQUEST {
   description: string;
   price: string;
   owner_id?: number;
+  id?: number;
 }

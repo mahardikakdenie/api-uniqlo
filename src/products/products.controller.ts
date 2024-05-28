@@ -46,9 +46,8 @@ export class ProductsController {
   @Get()
   async getProducts(
     @Query() request: I_COMMON_QUERY,
-    @Query() id?: number,
   ): Promise<I_WEBRESPONSE<Array<T_PRODUCT_RESPONSE>, I_META>> {
-    const products = await this.productService.getProducts(request, id);
+    const products = await this.productService.getProducts(request);
 
     return this.JSON.response(products);
   }

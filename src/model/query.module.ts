@@ -4,4 +4,5 @@ export interface I_COMMON_QUERY {
   page?: number;
   limitPage?: number;
   search?: string;
+  id?: number;
 }

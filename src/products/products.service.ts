@@ -36,9 +36,8 @@ export class ProductsService {
 
   async getProducts(
     request: I_COMMON_QUERY,
-    id?: any,
   ): Promise<Array<T_PRODUCT_RESPONSE>> {
-    const queryWhere = queryBuilder({ id: Number(id?.id) });
+    const queryWhere = queryBuilder({ id: Number(request?.id) });
     const products = this.prismaService.products.findMany({
       skip: Number(request?.skip ?? 0),
       take: Number(request?.take ?? 0),
